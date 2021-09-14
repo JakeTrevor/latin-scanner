@@ -3,27 +3,25 @@ import type {
   outputObject,
   scannedLineObject,
   scanSettingsObject,
-  meterStrict,
 } from "./types";
 import { removePunctuation } from "./punctuationFunctions";
 import ANALYSIS_FUNCTIONS from "./lineAnalysisFunctions";
 import { preScan, postScan } from "./commonFunctions";
-import { scannedLine, switchElegaicMeter } from "./utils";
+import { switchElegaicMeter } from "./utils";
+import { scannedLine } from "./classes";
 
-export let scanParagraph = (
+let scanParagraph = (
   text: string,
   settings: scanSettingsObject
 ): scannedLineObject[] => {
   let lines = text.split("\n");
   let finishedLines: scannedLineObject[] = [];
 
-  if (settings.meter === "Elegaic") {
-    let currentMeter = settings.firstMeter;
-
+  if (settings.elegaic) {
     for (let line of lines) {
       if (line !== "") {
-        finishedLines.push(scanLine(currentMeter, line));
-        currentMeter = switchElegaicMeter(currentMeter);
+        finishedLines.push(scanLine(settings, line));
+        settings.meter = switchElegaicMeter(settings.meter);
       }
     }
 
@@ -31,7 +29,7 @@ export let scanParagraph = (
   } else {
     for (let line of lines) {
       if (line !== "") {
-        finishedLines.push(scanLine(settings.meter, line));
+        finishedLines.push(scanLine(settings, line));
       }
     }
   }
@@ -39,11 +37,15 @@ export let scanParagraph = (
   return finishedLines;
 };
 
-export let scanLine = (meter: meterStrict, line: string): scannedLineObject => {
+export let scanLine = (
+  { meter }: scanSettingsObject,
+  line: string
+): scannedLineObject => {
   let output: scannedLineObject = new scannedLine(meter, line);
   //start by stripping the line of punctuation and performin a first pass
   let [punctuation, strippedLine] = removePunctuation(line);
 
+  //todo move this to prescan?
   let firstPass = preScan(strippedLine);
 
   for (let each of firstPass) {
@@ -62,13 +64,19 @@ export let scanLine = (meter: meterStrict, line: string): scannedLineObject => {
   }
 
   if (output.numberOfSolutions === 1) {
-    output.status = meter + "OK";
+    output.status = "OK";
     output.statusMessage = "This line has been scanned in " + meter;
   } else if (output.numberOfSolutions > 1) {
-    output.status = meter + "+";
+    output.status = "+";
     output.statusMessage = "This line has multiple scans in " + meter;
   }
   return output;
+};
+
+export let defaultSettings: scanSettingsObject = {
+  meter: "Hexameter",
+  elegaic: false,
+  subscriptIgnoredText: true,
 };
 
 export default scanParagraph;

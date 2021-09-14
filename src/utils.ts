@@ -1,58 +1,4 @@
-import {
-  vowel,
-  quantity,
-  scanSettingsObject,
-  quantityStrict,
-  scannedLineObject,
-  meter,
-  outputObject,
-  meterStrict,
-} from "./types";
-
-export class scannedLine implements scannedLineObject {
-  status: string = "Warning";
-  output: outputObject[] = [];
-  statusMessage: string;
-  meter: meterStrict;
-  line: string;
-
-  constructor(meter: meterStrict, line: string) {
-    this.line = line;
-    this.meter = meter;
-    this.statusMessage = "This line cannot be scanned in " + meter;
-  }
-
-  get flat() {
-    let temp: string[] = [];
-    for (let each of this.output) {
-      temp = temp.concat(each.full, each.raw);
-    }
-    temp.push(this.line);
-
-    return temp;
-  }
-
-  get solutions() {
-    let temp: string[] = [];
-    for (let each of this.output) {
-      temp = temp.concat(each.full);
-    }
-    return temp;
-  }
-
-  get numberOfSolutions() {
-    let temp = 0;
-    for (let each of this.output) {
-      temp += each.full.length;
-    }
-    return temp;
-  }
-}
-
-export let PresetOptions: scanSettingsObject = {
-  meter: "Hexameter",
-  firstMeter: "Hexameter",
-};
+import { vowel, quantity, quantityStrict, meter } from "./types";
 
 //regex expressions for constants to do with latin lanaguge
 export default {
@@ -113,11 +59,7 @@ export function getLetterWithMarking(
   quantity: quantity,
   letter: vowel
 ): string {
-  if (
-    quantity === "Undefined" ||
-    quantity === "Break" ||
-    !/[aeiouy]/.test(letter.toLowerCase())
-  ) {
+  if (quantity === "Undefined" || !/[aeiouy]/.test(letter.toLowerCase())) {
     return letter;
   } else {
     return vowelsWithMarkings[letter][quantity];
@@ -140,9 +82,9 @@ export function sum(arr: number[]): number {
   });
 }
 
-export function nBitCombos(nBits: number): string[] {
-  let work = Array(nBits).fill(0);
-  let output: string[] = [work.join("")];
+export function nBitCombos(nBits: number): (0 | 1)[][] {
+  let work: (0 | 1)[] = Array(nBits).fill(0);
+  let output: (0 | 1)[][] = [work];
   while (sum(work) < nBits) {
     work[nBits - 1] += 1;
     for (let i = nBits; i > 0; i--) {
@@ -151,11 +93,11 @@ export function nBitCombos(nBits: number): string[] {
         work[i - 1]++;
       }
     }
-    output.push(work.join(""));
+    output.push(work);
   }
   return output.sort();
 }
 
-export function switchElegaicMeter(meter: meter): meterStrict {
+export function switchElegaicMeter(meter: meter): meter {
   return meter === "Hexameter" ? "Pentameter" : "Hexameter";
 }

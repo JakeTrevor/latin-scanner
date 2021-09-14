@@ -1,12 +1,13 @@
 export interface scanSettingsObject {
   meter: meter;
-  firstMeter: meterStrict;
+  elegaic: boolean;
+  subscriptIgnoredText: boolean;
 }
 
 export interface scannedLineObject {
-  status: string;
+  status: scanStatus;
   statusMessage: string;
-  meter: meterStrict;
+  meter: meter;
   line: string;
   output: outputObject[];
 
@@ -24,18 +25,30 @@ export interface outputObject {
 }
 
 export interface analysedLine {
-  scans: [Record<number, quantity>, number[]][];
+  scans: [Record<number, quantity>, breakObject[]][];
   error: string;
 }
 
-export type scanStatus = "Warning";
+export interface breakObject {
+  preceedingVowel: number;
+  succeedingVowel: number;
+  line: string;
+  position: number;
+}
+
+export type scanStatus = "Warning" | "OK" | "+";
 
 export type scanNature = "Full Scan" | "Quantities" | "Input";
 
-export type meter = "Hexameter" | "Pentameter" | "Elegaic"; //only useable meters included.
-export type meterStrict = "Hexameter" | "Pentameter";
-export type quantity = "Undefined" | "Long" | "Short" | "Break";
+export type meter = "Hexameter" | "Pentameter";
+
 export type quantityStrict = "Long" | "Short";
+export type quantity = "Undefined" | quantityStrict;
+
+export type footType =
+  | 0 // represents a spondee
+  | 1 // represents a dactyl
+  | 2; // represents a half foor (1 long syllable)
 
 export type vowel =
   | "a"

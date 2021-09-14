@@ -1,11 +1,9 @@
-import type { vowel, quantity } from "./types";
-import expressions, {
-  findAllMatches,
-  getLetterWithMarking,
-  nBitCombos,
-} from "./utils";
-import { insertPunctuation, insertBreaks } from "./punctuationFunctions";
+import type { quantity, breakObject } from "./types";
+import expressions, { findAllMatches, nBitCombos } from "./utils";
+import { insertPunctuation } from "./punctuationFunctions";
+import { insertBreaks, insertQuantities } from "./commonSubFunctions";
 
+//TODO *try* to reduce clutter in this function.
 export let preScan = (line: string): Record<number, quantity>[] => {
   line = line.toLowerCase();
 
@@ -108,7 +106,7 @@ export let preScan = (line: string): Record<number, quantity>[] => {
       for (let j = 0; j < possibleDiphs.length; j++) {
         delete quants[possibleDiphs[j]];
         delete quants[possibleDiphs[j] + 1];
-        if (combos[i][j] == "0") {
+        if (combos[i][j] === 0) {
           quants[possibleDiphs[j]] = "Long";
         } else {
           quants[possibleDiphs[j]] = "Short";
@@ -129,32 +127,23 @@ export let postScan = (
   lineString: string,
   punctuation: IterableIterator<RegExpMatchArray>,
   quantities: Record<number, quantity>,
-  breaks: number[]
+  breaks: breakObject[]
 ): string => {
   let lineArray: string[] = Array.from(lineString);
-  let vowelPositions = Object.keys(quantities).map((el) => parseInt(el));
+
+  //set the line for each break; if this not done, will throw error.
+  for (let each of breaks) {
+    each.line = lineString;
+  }
 
   //insert acented letters
   lineArray = insertQuantities(lineArray, quantities);
 
-  //add the punctuation back in
-  lineArray = insertPunctuation(lineArray, punctuation);
+  // add in breaks
+  lineArray = insertBreaks(lineArray, breaks);
 
-  lineArray = insertBreaks(breaks, vowelPositions, punctuation, lineArray);
+  //add the punctuation back in
+  lineArray = insertPunctuation(lineArray, punctuation, breaks);
+
   return lineArray.join("");
 };
-
-function insertQuantities(
-  lineArray: string[],
-  quantities: Record<number, quantity>
-) {
-  let vowelPositions = Object.keys(quantities).map((el) => parseInt(el));
-  for (let each of vowelPositions) {
-    lineArray.splice(
-      each,
-      1,
-      getLetterWithMarking(quantities[each], lineArray[each] as vowel)
-    );
-  }
-  return lineArray;
-}
