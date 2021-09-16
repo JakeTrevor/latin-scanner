@@ -1,4 +1,5 @@
 import { removePunctuation } from "../../src/punctuationFunctions";
+import { regexMatch } from "../../src/types";
 
 let cleanTestSentence = "arma virumque cano troiae qui primus ab oris";
 let testSentence = "arma, virumque. :cano; troi-ae() qui! primus? ab oris..";
@@ -16,11 +17,11 @@ let punctuationPositions = {
   54: ".",
 };
 
-function regexToObj(matchArray: IterableIterator<RegExpMatchArray>) {
+function regexToObj(matchArray: regexMatch[]) {
   let temp: Record<number, string> = {};
   for (let each of matchArray) {
     let positionOfMatch = each.index as number;
-    let matchLiteral = each[0];
+    let matchLiteral = each.value;
     temp[positionOfMatch] = matchLiteral;
   }
   return temp;

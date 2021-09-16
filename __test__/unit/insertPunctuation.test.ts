@@ -3,18 +3,24 @@ import {
   removePunctuation,
 } from "../../src/punctuationFunctions";
 
-let testSentence = "arma, virumque. :cano; troi-ae() qui! primus? ab oris..";
-let cleanTestSentence = "arma virumque cano troiae qui primus ab oris";
-let [punctuation, clean] = removePunctuation(testSentence);
-
 describe("Testing insertPunctuation function", () => {
-  //declaring test dependencies:
-  //"./removePunctuation.test.ts"
   test("inserting punctuation back into a line", () => {
-    let cleanSentenceArray = cleanTestSentence.split("");
-    let testSentenceArray = testSentence.split("");
-    expect(insertPunctuation(cleanSentenceArray, punctuation)).toEqual(
-      testSentenceArray
+    let input = "arma virumque cano troiae qui primus ab oris";
+    let expected = "arma, virumque. :cano; troi-ae() qui! primus? ab oris..";
+    let [punctuation, clean] = removePunctuation(expected);
+    expect(insertPunctuation(input.split(""), punctuation, [])).toEqual(
+      expected.split("")
     );
   });
+
+  test.todo("testing inserting punctuation when breaks are present");
+  () => {
+    let input = "arma| virumque| cano| troiae qui primus ab oris";
+    let expected = "arma|, virumque|. :cano|; troi-ae() qui! primus? ab oris..";
+    let breaks = [4, 14, 20];
+    let [punctuation, clean] = removePunctuation(expected);
+    expect(insertPunctuation(input.split(""), punctuation, [])).toEqual(
+      expected.split("")
+    );
+  };
 });

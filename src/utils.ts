@@ -54,7 +54,6 @@ export const vowelsWithMarkings: Record<
   Y: { Long: "Ȳ", Short: "Y̌" },
 };
 
-//*busywork functions
 export function getLetterWithMarking(
   quantity: quantity,
   letter: vowel
@@ -66,6 +65,7 @@ export function getLetterWithMarking(
   }
 }
 
+//TODO consider neccesity
 export function findAllMatches(string: string, regex: RegExp): number[] {
   regex.test(""); //"clear" the regex, since .test() followed by .exec() will return second instance.
   let posArray: number[] = [];
@@ -76,15 +76,17 @@ export function findAllMatches(string: string, regex: RegExp): number[] {
   return posArray;
 }
 
+//*tested
 export function sum(arr: number[]): number {
   return arr.reduce((accumulator, currentValue) => {
     return accumulator + currentValue;
   });
 }
 
+//*tested
 export function nBitCombos(nBits: number): (0 | 1)[][] {
   let work: (0 | 1)[] = Array(nBits).fill(0);
-  let output: (0 | 1)[][] = [work];
+  let output: (0 | 1)[][] = [[...work]];
   while (sum(work) < nBits) {
     work[nBits - 1] += 1;
     for (let i = nBits; i > 0; i--) {
@@ -93,11 +95,12 @@ export function nBitCombos(nBits: number): (0 | 1)[][] {
         work[i - 1]++;
       }
     }
-    output.push(work);
+    output.push([...work]);
   }
   return output.sort();
 }
 
+//*tested
 export function switchElegaicMeter(meter: meter): meter {
   return meter === "Hexameter" ? "Pentameter" : "Hexameter";
 }

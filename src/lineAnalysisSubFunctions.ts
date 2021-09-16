@@ -15,80 +15,77 @@ export function checkForLongShortLong(line: quantity[]): boolean {
   return val;
 }
 
+//*tested
 export function convertToQuantityArray(
-  rhythmArray: footType[][]
-): [quantityStrict[], number[]][] {
+  rhythm: footType[]
+): [quantityStrict[], number[]] {
   //init variables
-  let output: [quantityStrict[], number[]][] = [];
+  let output: [quantityStrict[], number[]];
   let rhythmInSyllables: quantityStrict[];
   let breaks: number[];
 
   //loop over each rhythm
-  for (let rhythm of rhythmArray) {
-    rhythmInSyllables = [];
-    breaks = [];
+  rhythmInSyllables = [];
+  breaks = [];
 
-    //loop over rhythm syllable in the rhytm
-    for (let foot of rhythm) {
-      [rhythmInSyllables, breaks] = addFoot(rhythmInSyllables, breaks, foot);
-    }
-
-    output.push([rhythmInSyllables, breaks]); //push this to the list of meters
+  //loop over rhythm syllable in the rhytm
+  for (let foot of rhythm) {
+    rhythmInSyllables = addFoot(rhythmInSyllables, foot);
+    breaks.push(rhythmInSyllables.length - 1);
   }
+  output = [rhythmInSyllables, breaks];
+
   return output;
 }
 
-function addFoot(
+//*tested
+export function addFoot(
   quantities: quantityStrict[],
-  breaks: number[],
   foot: footType
-): [quantityStrict[], number[]] {
+): quantityStrict[] {
   let footTypeToLiteral: Record<footType, quantityStrict[]> = {
     0: ["Long", "Long"] as quantityStrict[],
-    1: ["Long", "short", "short"] as quantityStrict[],
+    1: ["Long", "Short", "Short"] as quantityStrict[],
     2: ["Long"] as quantityStrict[],
   };
 
   let footLiteral = footTypeToLiteral[foot];
-  quantities.concat(footLiteral);
+  quantities = quantities.concat(footLiteral);
 
-  breaks.push(quantities.length);
-
-  return [quantities, breaks];
+  return quantities;
 }
 
-export function validateRhytms(
+//*tested
+export function validateRhythm(
   knownQuantValues: quantity[],
-  possibleRhythms: [quantityStrict[], number[]][]
-) {
+  rhythmToValidate: quantityStrict[],
+  dontCheck: number
+): boolean {
   let curQuant: quantity;
   let index: number;
+  let max = knownQuantValues.length - dontCheck;
   for ([index, curQuant] of knownQuantValues.entries()) {
+    if (index === max) {
+      break;
+    }
     if (curQuant !== "Undefined") {
-      for (let counter = 0; counter < possibleRhythms.length; counter++) {
-        //check if there is a mismatch between known and proposed quants
-        let currentRhythm = possibleRhythms[counter][0];
-        if (currentRhythm[index] !== curQuant) {
-          //if there is, remove the rhythm
-          possibleRhythms.splice(counter, 1);
-          counter--;
-        }
+      let checkQuant = rhythmToValidate[index];
+      if (curQuant !== checkQuant) {
+        return false;
       }
     }
   }
-
-  return possibleRhythms;
+  return true;
 }
 
 export function convertRhythmsToScanObjectArray(
   validRhythms: [quantityStrict[], number[]][],
   vowelPositions: number[]
 ): [Record<number, quantity>, breakObject[]][] {
-  let outputList = [];
+  let outputList = validRhythms.map((el) => {
+    return convertRhythmToScanObject(el, vowelPositions);
+  });
 
-  for (let each of validRhythms) {
-    outputList.push(convertRhythmToScanObject(each, vowelPositions));
-  }
   return outputList;
 }
 

@@ -1,6 +1,6 @@
 import {
   convertToQuantityArray,
-  validateRhytms,
+  validateRhythm,
   convertRhythmsToScanObjectArray,
   checkForLongShortLong,
 } from "./lineAnalysisSubFunctions";
@@ -30,20 +30,7 @@ export function analyseHex(map: Record<number, quantity>): analysedLine {
     }
   );
 
-  //we dont need to analyse the last 5 vowels for hex
-  //since they are gauranteed.
-  let last5Vowels = vowels.slice(-5);
-  let mapTrimmedForAnalysis = { ...map };
-  for (let each of last5Vowels) {
-    delete mapTrimmedForAnalysis[each];
-  }
-  let lineContainsLSL = checkForLongShortLong(Object.values(map));
-
-  let result = analyse(
-    rhythmsWithEndings,
-    mapTrimmedForAnalysis,
-    lineContainsLSL
-  );
+  let result = analyse(rhythmsWithEndings, map, 5);
   return result;
 }
 
@@ -79,30 +66,32 @@ export function analysePen(map: Record<number, quantity>): analysedLine {
   }
   let lineContainsLSL = checkForLongShortLong(Object.values(map));
 
-  let result = analyse(
-    rhythmsWithEndings,
-    mapTrimmedForAnalysis,
-    lineContainsLSL
-  );
+  let result = analyse(rhythmsWithEndings, mapTrimmedForAnalysis, 8);
   return result;
 }
 
 function analyse(
   rhythmsOfCorrectLength: footType[][],
   map: Record<number, quantity>,
-  containsLSL: boolean
+  dontCheck: number
 ) {
   let knownQuantValues = Object.values(map);
   let vowelPositions = Object.keys(map).map((each) => {
     return parseInt(each);
   });
 
-  let rhythmsAsQuantities = convertToQuantityArray(rhythmsOfCorrectLength);
-  let validRhythms = validateRhytms(knownQuantValues, rhythmsAsQuantities);
+  let rhythmsAsQuantities = rhythmsOfCorrectLength.map((el) => {
+    return convertToQuantityArray(el);
+  });
+
+  let validRhythms = rhythmsAsQuantities.filter((el) => {
+    return validateRhythm(knownQuantValues, el[0], dontCheck);
+  });
 
   let scans = convertRhythmsToScanObjectArray(validRhythms, vowelPositions);
 
   //check for bad patterns
+  let containsLSL = checkForLongShortLong(knownQuantValues);
   let returnedObject: analysedLine = { scans: scans, error: "" };
   if (returnedObject.error) {
     //do nothing
@@ -114,9 +103,7 @@ function analyse(
   return returnedObject;
 }
 
-const ANALYSIS_FUNCTIONS = {
+export default {
   Hexameter: analyseHex,
   Pentameter: analysePen,
 };
-
-export default ANALYSIS_FUNCTIONS;

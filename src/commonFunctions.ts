@@ -1,8 +1,9 @@
-import type { quantity, breakObject } from "./types";
+import type { quantity, breakObject, regexMatch } from "./types";
 import expressions, { findAllMatches, nBitCombos } from "./utils";
 import { insertPunctuation } from "./punctuationFunctions";
 import { insertBreaks, insertQuantities } from "./commonSubFunctions";
 
+//*tested
 //TODO *try* to reduce clutter in this function.
 export let preScan = (line: string): Record<number, quantity>[] => {
   line = line.toLowerCase();
@@ -125,7 +126,7 @@ export let preScan = (line: string): Record<number, quantity>[] => {
 
 export let postScan = (
   lineString: string,
-  punctuation: IterableIterator<RegExpMatchArray>,
+  punctuation: regexMatch[],
   quantities: Record<number, quantity>,
   breaks: breakObject[]
 ): string => {

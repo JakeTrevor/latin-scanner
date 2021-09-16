@@ -36,6 +36,11 @@ export interface breakObject {
   position: number;
 }
 
+export interface regexMatch {
+  index: number;
+  value: string;
+}
+
 export type scanStatus = "Warning" | "OK" | "+";
 
 export type scanNature = "Full Scan" | "Quantities" | "Input";
