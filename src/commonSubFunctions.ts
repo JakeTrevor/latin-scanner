@@ -15,6 +15,7 @@ export function insertQuantities(
   return lineArray;
 }
 
+//?test being written
 export function insertBreaks(
   lineArray: string[],
   breaks: breakObject[]
@@ -22,7 +23,7 @@ export function insertBreaks(
   //punctuation: regexMatch[],
 ) {
   //if there are breaks for this line
-  if (breaks) {
+  if (breaks && breaks.length > 0) {
     for (let each of breaks.reverse()) {
       let position = each.position;
       lineArray.splice(position, 0, "|");

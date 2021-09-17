@@ -65,7 +65,6 @@ export function getLetterWithMarking(
   }
 }
 
-//TODO consider neccesity
 export function findAllMatches(string: string, regex: RegExp): number[] {
   regex.test(""); //"clear" the regex, since .test() followed by .exec() will return second instance.
   let posArray: number[] = [];

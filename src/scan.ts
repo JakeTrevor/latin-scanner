@@ -37,6 +37,7 @@ let scanParagraph = (
   return finishedLines;
 };
 
+//?partial testing
 export let scanLine = (
   { meter }: scanSettingsObject,
   line: string
@@ -67,7 +68,7 @@ export let scanLine = (
     output.status = "OK";
     output.statusMessage = "This line has been scanned in " + meter;
   } else if (output.numberOfSolutions > 1) {
-    output.status = "+";
+    output.status = "Plus";
     output.statusMessage = "This line has multiple scans in " + meter;
   }
   return output;

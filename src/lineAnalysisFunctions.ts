@@ -8,9 +8,7 @@ import type { analysedLine, footType, quantity } from "./types";
 import { nBitCombos, sum } from "./utils";
 
 export function analyseHex(map: Record<number, quantity>): analysedLine {
-  let vowels = Object.keys(map)
-    .map((el) => parseInt(el))
-    .sort();
+  let vowels = Object.keys(map).map((el) => parseInt(el));
   let numberOfVowels = vowels.length;
   let numberOfDactyls = numberOfVowels - 13;
 
@@ -35,9 +33,7 @@ export function analyseHex(map: Record<number, quantity>): analysedLine {
 }
 
 export function analysePen(map: Record<number, quantity>): analysedLine {
-  let vowels = Object.keys(map)
-    .map((el) => parseInt(el))
-    .sort();
+  let vowels = Object.keys(map).map((el) => parseInt(el));
   let numberOfVowels = vowels.length;
   let numberOfDactyls = numberOfVowels - 12;
 
@@ -47,26 +43,17 @@ export function analysePen(map: Record<number, quantity>): analysedLine {
     return { scans: [], error: "This line has too few vowels" };
   }
 
-  let rhythmsOfCorrectLength = nBitCombos(4).filter((el) => {
+  let rhythmsOfCorrectLength = nBitCombos(2).filter((el) => {
     return sum(el) === numberOfDactyls;
   });
 
   let rhythmsWithEndings = rhythmsOfCorrectLength.map(
     (rhythm: (0 | 1 | 2)[]) => {
-      return rhythm.concat([2, 0, 0, 2]);
+      return rhythm.concat([2, 1, 1, 2]);
     }
   );
 
-  //we dont need to analyse the last 8 vowels for pent.
-  //since they are gauranteed.
-  let last8Vowels = vowels.slice(-8);
-  let mapTrimmedForAnalysis = { ...map };
-  for (let each of last8Vowels) {
-    delete mapTrimmedForAnalysis[each];
-  }
-  let lineContainsLSL = checkForLongShortLong(Object.values(map));
-
-  let result = analyse(rhythmsWithEndings, mapTrimmedForAnalysis, 8);
+  let result = analyse(rhythmsWithEndings, map, 8);
   return result;
 }
 

@@ -124,6 +124,7 @@ export let preScan = (line: string): Record<number, quantity>[] => {
   return outputArr;
 };
 
+//?test being written
 export let postScan = (
   lineString: string,
   punctuation: regexMatch[],

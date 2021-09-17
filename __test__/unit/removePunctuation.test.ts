@@ -2,7 +2,6 @@ import { removePunctuation } from "../../src/punctuationFunctions";
 import { regexMatch } from "../../src/types";
 
 let cleanTestSentence = "arma virumque cano troiae qui primus ab oris";
-let testSentence = "arma, virumque. :cano; troi-ae() qui! primus? ab oris..";
 let punctuationPositions = {
   4: ",",
   14: ".",
@@ -27,10 +26,9 @@ function regexToObj(matchArray: regexMatch[]) {
   return temp;
 }
 describe("Testing removePunctuation funcion", () => {
-  () => {
-    //no test dependencies.
-  };
   test("removes punctuation from a string", () => {
+    let testSentence =
+      "arma, virumque. :cano; troi-ae() qui! primus? ab oris..";
     let [result, cleanLine] = removePunctuation(testSentence);
     let resultObj = regexToObj(result);
     expect(resultObj).toEqual(punctuationPositions);

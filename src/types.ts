@@ -41,7 +41,7 @@ export interface regexMatch {
   value: string;
 }
 
-export type scanStatus = "Warning" | "OK" | "+";
+export type scanStatus = "Warning" | "OK" | "Plus";
 
 export type scanNature = "Full Scan" | "Quantities" | "Input";
 

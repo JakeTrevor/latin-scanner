@@ -14,7 +14,7 @@ export let insertPunctuation = (
     let matchLiteral = each.value;
 
     let offset = breakPositions.reduce((acc, val) => {
-      if (val < positionOfMatch) {
+      if (val <= positionOfMatch) {
         return acc + 1;
       }
       return acc;
@@ -31,10 +31,8 @@ export let removePunctuation = (line: string): [regexMatch[], string] => {
   let markup = line.matchAll(expressions["punctuation"]);
   let output: regexMatch[] = [];
   for (let each of markup) {
-    if (each.index !== undefined) {
-      let temp: regexMatch = { index: each.index, value: each[0] };
-      output.push(temp);
-    }
+    let temp: regexMatch = { index: each.index as number, value: each[0] };
+    output.push(temp);
   }
 
   line = line.replace(expressions["punctuation"], "");
