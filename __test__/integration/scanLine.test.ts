@@ -1,5 +1,4 @@
-import { scanLine } from "../../src/scan";
-import { defaultSettings } from "../../src/scan";
+import { defaultSettings, scanLine } from "../../src";
 
 describe("Testing scanLine function", () => {
   test("testing with Aeneid ln 1 ", () => {
