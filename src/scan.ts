@@ -4,13 +4,13 @@ import type {
   scannedLineObject,
   scanSettingsObject,
 } from "./types";
-import { removePunctuation } from "./punctuationFunctions";
 import ANALYSIS_FUNCTIONS from "./lineAnalysisFunctions";
 import { preScan, postScan } from "./commonFunctions";
 import { switchElegaicMeter } from "./utils";
 import { scannedLine } from "./classes";
 
-let scanParagraph = (
+//?tests being written
+export let scanParagraph = (
   text: string,
   settings: scanSettingsObject
 ): scannedLineObject[] => {
@@ -43,11 +43,8 @@ export let scanLine = (
   line: string
 ): scannedLineObject => {
   let output: scannedLineObject = new scannedLine(meter, line);
-  //start by stripping the line of punctuation and performin a first pass
-  let [punctuation, strippedLine] = removePunctuation(line);
 
-  //todo move this to prescan?
-  let firstPass = preScan(strippedLine);
+  let [firstPass, strippedLine, punctuation] = preScan(line);
 
   for (let each of firstPass) {
     let temp: outputObject = { raw: "", full: [], error: "" };
@@ -77,7 +74,4 @@ export let scanLine = (
 export let defaultSettings: scanSettingsObject = {
   meter: "Hexameter",
   elegaic: false,
-  subscriptIgnoredText: true,
 };
-
-export default scanParagraph;

@@ -39,13 +39,13 @@ describe("Testing scannedLine class", () => {
     testObj.output = output;
 
     expect(testObj.flat).toEqual([
+      "input",
+      "rawA",
       "fullA1",
       "fullA2",
-      "rawA",
+      "rawB",
       "fullB1",
       "fullB2",
-      "rawB",
-      "input",
     ]);
     expect(testObj.solutions).toEqual(["fullA1", "fullA2", "fullB1", "fullB2"]);
     expect(testObj.numberOfSolutions).toEqual(4);

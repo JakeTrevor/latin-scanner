@@ -25,15 +25,64 @@ describe("Testing scanLine function", () => {
     expect(result.solutions).toContain(expected);
   });
 
-  test.todo("testing with ellision on second word.");
+  test("testing with line that is too long (hexameter)", () => {
+    let input =
+      "Arma virumque canō, Trōiae quī prīmus ab ōrīs, Ītaliam, fātō profugus, Lāvīniaque vēnit "; //aeneid bk1 lns 1 & 2
+    let settings = defaultSettings;
+    let result = scanLine(settings, input);
+    expect(result.numberOfSolutions).toEqual(0);
+    expect(result.output[0].error).toEqual("This line has too many vowels");
+  });
 
-  test.todo("testing with line that is too long (hexameter)");
-  test.todo("testing with line that is too short (hexameter)");
-  test.todo("testing with line that is too long (pentameter)");
-  test.todo("testing with line that is too short (pentameter)");
-  test.todo("testing with a line that has no scans.");
+  test("testing with line that is too short (hexameter)", () => {
+    let input = "Arma virumque canō,"; //half of aeneid 1.1
+    let settings = defaultSettings;
 
-  test.todo("testing with line including a long short long pattern ");
+    let result = scanLine(settings, input);
+    expect(result.numberOfSolutions).toEqual(0);
+    expect(result.output[0].error).toEqual("This line has too few vowels");
+  });
+
+  test("testing with line that is too long (pentameter)", () => {
+    let input =
+      "Arma virumque canō, Trōiae quī prīmus ab ōrīs, Ītaliam, fātō profugus, Lāvīniaque vēnit "; //aeneid bk1 lns 1 & 2
+    let settings = defaultSettings;
+    settings.meter = "Pentameter";
+
+    let result = scanLine(settings, input);
+    expect(result.numberOfSolutions).toEqual(0);
+    expect(result.output[0].error).toEqual("This line has too many vowels");
+  });
+
+  test("testing with line that is too short (pentameter)", () => {
+    let input = "Arma virumque canō,"; //half of aeneid 1.1
+    let settings = defaultSettings;
+    settings.meter = "Pentameter";
+
+    let result = scanLine(settings, input);
+    expect(result.numberOfSolutions).toEqual(0);
+    expect(result.output[0].error).toEqual("This line has too few vowels");
+  });
+
+  test("testing with a line that has no scans.", () => {
+    let input = "Ītaliam, fātō profugus, Lāvīniaque vēnit,"; //aeneid 1.2
+    let settings = defaultSettings;
+    let result = scanLine(settings, input);
+    expect(result.numberOfSolutions).toEqual(0);
+  });
 
   test.todo("testing with a line that has multiple scans");
+  () => {
+    let input = "quidve dolens, regina deum tot volvere casus,"; //aeneid 1.9
+    let settings = defaultSettings;
+    let result = scanLine(settings, input);
+
+    expect(result.status).toEqual("Plus");
+    expect(result.statusMessage).toEqual(
+      "This line has multiple scans in Hexameter"
+    );
+    expect(result.numberOfSolutions).toEqual(2);
+  };
+  test.todo("testing with ellision on second word.");
+  test.todo("testing with line including a long short long pattern ");
 });

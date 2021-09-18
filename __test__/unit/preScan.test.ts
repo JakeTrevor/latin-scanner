@@ -32,13 +32,13 @@ describe("Testing preScan function", () => {
 
   test("test basic functionality", () => {
     let result = preScan(aeneidLineOne);
-    expect(result).toEqual([aeneidLineOneKnownQuantities]);
+    expect(result[0]).toEqual([aeneidLineOneKnownQuantities]);
   });
 
   test("test handing of forced vowels", () => {
     let result = preScan(aeneidLineOneWithForcedFirst);
-    expect(result).toEqual([aeneidLineOneKnownQuantitiesWithForcedFirst]);
+    expect(result[0]).toEqual([aeneidLineOneKnownQuantitiesWithForcedFirst]);
   });
 
-  test.todo("testing handling of EU");
+  test.todo("testing handling of EU"); //this is actually a mamoth.
 });

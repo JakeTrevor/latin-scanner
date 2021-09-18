@@ -21,10 +21,11 @@ export class scannedLine implements scannedLineObject {
 
   get flat() {
     let temp: string[] = [];
-    for (let each of this.output) {
-      temp = temp.concat(each.full, each.raw);
-    }
     temp.push(this.line);
+
+    for (let each of this.output) {
+      temp = temp.concat(each.raw, each.full);
+    }
 
     return temp;
   }

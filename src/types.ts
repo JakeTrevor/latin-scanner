@@ -1,7 +1,6 @@
 export interface scanSettingsObject {
   meter: meter;
   elegaic: boolean;
-  subscriptIgnoredText: boolean;
 }
 
 export interface scannedLineObject {

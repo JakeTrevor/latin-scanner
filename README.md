@@ -37,8 +37,11 @@ There are two user-facing functions in the latin-scanner libarary. Both of these
 The scanSettings object is how settings are passed to the analyser functions, and it is the same for both functions described above. There are two properties on the object:
 
 - `meter`:
+
   The meter (a `string` with the value of `"Hexameter"` or `"Pentameter"`) of the content to be scanned.
-- `elegaic`: \n
+
+- `elegaic`:
+
   A `boolean` that denotes weather the paragraph should be scanned in Elegaic;
 
   > Elegaic poetry is multi-line by nature and therefore it is ony supported within the scanParagraph function. The `elegaic` property has no effect on the scanLine function.

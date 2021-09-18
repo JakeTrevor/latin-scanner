@@ -1,12 +1,15 @@
 import type { quantity, breakObject, regexMatch } from "./types";
 import expressions, { findAllMatches, nBitCombos } from "./utils";
-import { insertPunctuation } from "./punctuationFunctions";
+import { insertPunctuation, removePunctuation } from "./punctuationFunctions";
 import { insertBreaks, insertQuantities } from "./commonSubFunctions";
 
 //*tested
 //TODO *try* to reduce clutter in this function.
-export let preScan = (line: string): Record<number, quantity>[] => {
-  line = line.toLowerCase();
+export let preScan = (
+  line: string
+): [Record<number, quantity>[], string, regexMatch[]] => {
+  let [punctuation, strippedLine] = removePunctuation(line);
+  line = strippedLine.toLowerCase();
 
   //pull out all the forced vowels and normalise the string.
   let forcedSpondees = findAllMatches(line, expressions.spondeeVowels);
@@ -121,7 +124,7 @@ export let preScan = (line: string): Record<number, quantity>[] => {
     outputArr = [quants];
   }
 
-  return outputArr;
+  return [outputArr, strippedLine, punctuation];
 };
 
 //?test being written

@@ -89,7 +89,6 @@ export function convertRhythmsToScanObjectArray(
   return outputList;
 }
 
-//?test being written
 function convertRhythmToScanObject(
   [quantities, breaks]: [quantityStrict[], number[]],
   vowelPositions: number[]
