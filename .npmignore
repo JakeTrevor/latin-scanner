@@ -1,4 +1,4 @@
 src/
 coverage/
 .vscode/
-__tests__/
+__test__/
