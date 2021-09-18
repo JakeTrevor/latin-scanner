@@ -1,6 +1,6 @@
 {
   "name": "latin-scanner",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "API for scanning latin poetry",
   "main": "build/scan.js",
   "types": "build/index.d.ts",
