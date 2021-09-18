@@ -18,15 +18,19 @@ npm install latin-scanner
 
 ## Usage
 
-This API provides all of its functionality via named exports. There are three:
+This API provides all of its functionality via named exports. There are 4:
 
 1. `scanLine`
 2. `scanParagraph`
 3. `defaultSettings`
+4. `replaceForcedQuantities`
 
 ## functions
 
-There are two user-facing functions in the latin-scanner libarary. Both of these accept a settings object and a string as arguments.
+There are three user-facing functions in the latin-scanner libarary.
+One of these is the `replaceForcedQuantities` function, which takes in a string as an input and will replace `_[VOWEL]` with a spondee and `@[vowel]` with a dactyl.
+
+The other two functions scan latin. Both of these accept a settings object and a string as arguments.
 
 `scanLine(settings, line)` will assume that its string input is a line of poetry. It returns a scannedLine object which contains the solutions found as well as meta data about the scan.
 

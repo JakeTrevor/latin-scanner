@@ -70,8 +70,3 @@ export let scanLine = (
   }
   return output;
 };
-
-export let defaultSettings: scanSettingsObject = {
-  meter: "Hexameter",
-  elegaic: false,
-};

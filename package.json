@@ -2,8 +2,8 @@
   "name": "latin-scanner",
   "version": "1.1.6",
   "description": "API for scanning latin poetry",
-  "main": "build/src/scan.js",
-  "types": "build/src/scan.d.ts",
+  "main": "build/src/index.js",
+  "types": "build/src/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/JakeTrevor/latin-scanner"
