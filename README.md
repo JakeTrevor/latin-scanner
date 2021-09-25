@@ -1,6 +1,6 @@
 # Latin-Scanner
 
-Latin-scanner is a javascript libarary that can scan latin poetry.
+Latin-scanner is a javascript library and API that can scan latin poetry.
 
 [What is scansion?](https://latin-scan.com/#/about)
 
